@@ -17,22 +17,29 @@ const generatePRDraft = async (participant: Omit<Participant, 'id' | 'prDraft' |
 
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    
     const prompt = `
-      Generate a professional and inspiring Public Relations (PR) draft of approximately 100 words for a skill training program participant.
-      The tone should be positive and forward-looking.
-      Do not use markdown. Output plain text only.
+      Role: Act as a Senior Public Relations Manager and Career Development Mentor for 'GWellth', a premier skill training institute.
+      
+      Goal: Write a compelling, professional 100-word profile (PR Draft) for a new trainee joining our program. The draft should bridge their current background with their future potential in the industry.
 
-      Participant Details:
+      Input Data:
       - Name: ${participant.name}
-      - College: ${participant.collegeName}
-      - Course: ${participant.course}
-      - Program Enrolled In: ${participant.programEnrolled}
-      - Target Audience Category: ${participant.targetAudience}
-      - Stated Goals: ${participant.goals}
-      - Hobbies: ${participant.hobbies}
-      - Address: ${participant.city}
+      - Background: ${participant.targetAudience} (Category)
+      - Education: ${participant.course} at ${participant.collegeName}
+      - Enrolled Program: ${participant.programEnrolled} (Focus: Food Processing & Agriculture)
+      - Location: ${participant.city}
+      - Hobbies/Interests: ${participant.hobbies}
+      - Professional Goals: ${participant.goals}
 
-      Draft the PR highlighting their potential and the value of the training program.
+      Tone: Professional, Inspiring, Empowering, and Corporate-Ready.
+
+      Output Requirements:
+      1. Write in the third person.
+      2. Do not use Markdown formatting (no bold, no italics).
+      3. Do not use headers or titles.
+      4. Focus on how this training will help them achieve their specific goals.
+      5. Return ONLY the paragraph text.
     `;
 
     const response = await ai.models.generateContent({
