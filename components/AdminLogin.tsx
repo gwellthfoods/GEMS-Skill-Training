@@ -9,7 +9,8 @@ const validCredentials = [
   'gwellth2021@gmail.com',
   'gwellth.foods@gmail.com',
   '8433014984',
-  '9269267664',
+  '7895760354',
+  '7464935684',
 ];
 
 const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {

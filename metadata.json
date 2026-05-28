@@ -1,7 +1,8 @@
 {
-  "name": "GEMS: Skill Training in Food Processing and Agriculture",
-  "description": "An application for participant onboarding, PR generation, and program management for skill training in Food Processing and Agriculture. It captures biodata, uses Gemini to generate a PR draft, and provides admin features for issuing letters and certificates.",
+  "name": "GEMS: GWellth Entrepreneurship and Management Skills",
+  "description": "An application for the GEMS (GWellth Entrepreneurship and Management Skills) Training Program. It handles participant onboarding, PR generation, and program management for skill training in Food Processing and Agriculture.",
   "requestFramePermissions": [
-    "camera"
+    "camera",
+    "geolocation"
   ]
 }

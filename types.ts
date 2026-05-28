@@ -14,8 +14,11 @@ export interface Participant {
   pinCode: string;
   nativeAddress: string;
   mobile: string;
+  alternateMobile: string;
   email: string;
+  parentName: string;
   collegeName: string;
+  semesterYear: string;
   course: string;
   referredBy: string;
   hobbies: string;
@@ -25,6 +28,7 @@ export interface Participant {
   startDate: string;
   endDate: string;
   targetAudience: string;
+  preferredLanguage: 'English' | 'Hindi';
   prDraft: string;
   prDraftReview: PRDraftReview;
   status: 'Active' | 'Completed' | 'Dropped' | 'Checked-In';

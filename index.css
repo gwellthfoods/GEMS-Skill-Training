@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.font-signature {
+  font-family: 'Dancing Script', cursive;
+}

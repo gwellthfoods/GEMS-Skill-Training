@@ -7,6 +7,7 @@ import { generatePrPdf } from '../services/pdfService';
 interface SuccessViewProps {
   participant: Participant;
   onRegisterAnother: () => void;
+  onEdit: () => void;
 }
 
 // New component for displaying the review
@@ -59,7 +60,7 @@ const PRReviewDisplay: React.FC<{ review: Participant['prDraftReview'] }> = ({ r
   );
 };
 
-const SuccessView: React.FC<SuccessViewProps> = ({ participant, onRegisterAnother }) => {
+const SuccessView: React.FC<SuccessViewProps> = ({ participant, onRegisterAnother, onEdit }) => {
   const [editedPr, setEditedPr] = useState(participant.prDraft);
   const qrCodeRef = useRef<HTMLDivElement>(null);
 
@@ -154,12 +155,20 @@ const SuccessView: React.FC<SuccessViewProps> = ({ participant, onRegisterAnothe
               Save PR as PDF
             </button>
         </div>
-        <button
-          onClick={onRegisterAnother}
-          className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-        >
-          Register Another Participant
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <button
+            onClick={onEdit}
+            className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Edit Registration
+          </button>
+          <button
+            onClick={onRegisterAnother}
+            className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Register Another Participant
+          </button>
+        </div>
       </div>
     </div>
   );

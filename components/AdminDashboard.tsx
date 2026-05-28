@@ -148,9 +148,12 @@ const ParticipantDetailView: React.FC<{ participant: Participant, onClose: () =>
                     <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                         <DetailItem label="Email Address" value={participant.email} />
                         <DetailItem label="Mobile Number" value={participant.mobile} />
+                        <DetailItem label="Alternate Mobile" value={participant.alternateMobile} />
+                        <DetailItem label="Father/Mother Name" value={participant.parentName} />
                         <DetailItem label="Current Address" value={`${participant.address1}, ${participant.address2}, ${participant.city} - ${participant.pinCode}`} />
                         <DetailItem label="Native Address" value={participant.nativeAddress} />
                         <DetailItem label="College" value={participant.collegeName} />
+                        <DetailItem label="Semester / Year" value={participant.semesterYear} />
                         <DetailItem label="Course" value={participant.course} />
                         <DetailItem label="Referred By" value={participant.referredBy} />
                     </dl>

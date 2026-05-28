@@ -8,21 +8,43 @@ import useLocalStorage from './hooks/useLocalStorage';
 import { AppView } from './types';
 
 const Header: React.FC<{ onAdminClick: () => void, currentView: AppView, isConfigured: boolean }> = ({ onAdminClick, currentView, isConfigured }) => (
-  <header className="bg-white shadow-md">
+  <header className="bg-white shadow-md border-b border-gray-100 relative">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex items-center justify-between h-16">
-        <div className="flex items-center">
-          <svg className="h-8 w-8 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.085a2 2 0 00-1.736.97l-3.5 7m7-10H5a2 2 0 00-2 2v8a2 2 0 002 2h2.5" />
-          </svg>
-          <span className="ml-3 text-2xl font-bold text-gray-800 tracking-tight">GEMS Training Program</span>
-          {!isConfigured && <span className="ml-3 px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">Local Mode</span>}
+      <div className="flex items-center justify-between h-24">
+        {/* Left: Logo and Tagline */}
+        <div className="flex flex-col justify-center z-10">
+          <a href="https://www.gwellth.com" target="_blank" rel="noopener noreferrer" className="flex items-center group">
+            <div className="flex items-center text-[#f9a825]">
+              <svg className="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+              </svg>
+              <span className="ml-2 text-3xl font-black tracking-tighter group-hover:text-[#f57f17] transition-colors">Gwellth</span>
+            </div>
+          </a>
+          <p className="font-signature text-green-700 text-lg mt-0.5">Fuel your Body, Feed your Soul.</p>
         </div>
-        <div>
+
+        {/* Center: Program Title - Absolutely positioned to stay centered */}
+        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full max-w-[300px] md:max-w-none pointer-events-none">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight text-center pointer-events-auto">
+            GEMS Training Program
+          </h1>
+          <p className="text-xs md:text-sm font-medium text-gray-600 text-center pointer-events-auto mt-0.5">
+            GWellth Entrepreneurship and Management Skills
+          </p>
+          {!isConfigured && (
+            <span className="mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-200 uppercase tracking-widest pointer-events-auto">
+              Local Mode
+            </span>
+          )}
+        </div>
+
+        {/* Right: Admin Login */}
+        <div className="flex items-center z-10">
           {currentView !== 'adminDashboard' && (
             <button
               onClick={onAdminClick}
-              className="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200"
+              className="px-5 py-2.5 bg-gray-900 text-white text-sm font-bold rounded-full hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200 shadow-md hover:shadow-lg active:scale-95"
             >
               Admin Login
             </button>
@@ -43,7 +65,15 @@ const App: React.FC = () => {
   const isConfigured = googleSheetUrl && googleSheetUrl.startsWith('https://script.google.com');
 
   const handleRegistrationSuccess = useCallback((participant: Participant) => {
-    setParticipants(prev => [...prev, participant]);
+    setParticipants(prev => {
+      const index = prev.findIndex(p => p.id === participant.id);
+      if (index !== -1) {
+        const updated = [...prev];
+        updated[index] = participant;
+        return updated;
+      }
+      return [...prev, participant];
+    });
     setCurrentParticipant(participant);
     setView('success');
   }, [setParticipants]);
@@ -80,9 +110,15 @@ const App: React.FC = () => {
 
     switch (view) {
       case 'registration':
-        return <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} googleSheetUrl={googleSheetUrl} />;
+        return <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} googleSheetUrl={googleSheetUrl} participants={participants} />;
       case 'success':
-        return currentParticipant && <SuccessView participant={currentParticipant} onRegisterAnother={handleRegisterAnother} />;
+        return currentParticipant && (
+          <SuccessView 
+            participant={currentParticipant} 
+            onRegisterAnother={handleRegisterAnother} 
+            onEdit={() => setView('registration')}
+          />
+        );
       case 'adminLogin':
         return <AdminLogin onLoginSuccess={handleAdminLogin} />;
       case 'adminDashboard':
@@ -94,7 +130,7 @@ const App: React.FC = () => {
            setGoogleSheetUrl={setGoogleSheetUrl}
          />;
       default:
-        return <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} googleSheetUrl={googleSheetUrl} />;
+        return <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} googleSheetUrl={googleSheetUrl} participants={participants} />;
     }
   };
 
